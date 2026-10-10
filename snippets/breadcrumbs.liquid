@@ -1,0 +1,22 @@
+<nav class="breadcrumb" role="navigation" aria-label="breadcrumbs" style="font-size: 0.85rem; color: #666; margin-bottom: 20px;">
+    <a href="{{ routes.root_url }}" title="Home" style="color: #0066cc; text-decoration: none;">Home</a>
+    
+    {% if template contains 'product' %}
+      {% if collection %}
+        <span aria-hidden="true" style="margin: 0 6px;">&gt;</span>
+        {% if collection.handle %}
+          {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+          {{ collection.title | link_to: url }}
+        {% endif %}
+      {% elsif product.collections.size > 0 %}
+        {% comment %} Fallback: Output primary collection hierarchy if accessed directly {% endcomment %}
+        {% for col in product.collections limit: 5 %}
+          <span aria-hidden="true" style="margin: 0 6px;">&gt;</span>
+          <a href="{{ col.url }}" style="color: #0066cc; text-decoration: none;">{{ col.title }}</a>
+        {% endfor %}
+      {% endif %}
+  
+      <span aria-hidden="true" style="margin: 0 6px;">&gt;</span>
+      <span style="color: #333;">{{ product.title | truncate: 60 }}</span>
+    {% endif %}
+  </nav>
